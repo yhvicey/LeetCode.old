@@ -7,7 +7,7 @@ class Solution
 {
 	unordered_map<int, vector<int>> _edges;
 
-	unordered_map<int, bool> _visitRecorder;
+	unordered_map<int, int> _visitRecorder;
 
 	void preprocess(vector<pair<int, int>> &prerequisites)
 	{
@@ -20,20 +20,24 @@ class Solution
 
 	bool visit(int node)
 	{
-		if (_visitRecorder[node])
+		if (_visitRecorder[node] == 2)
+		{
+			return true;
+		}
+		if (_visitRecorder[node] == 1)
 		{
 			return false;
 		}
-		_visitRecorder[node] = true;
+		_visitRecorder[node] = 1;
 		auto prerequisites = _edges[node];
 		for (auto prerequisite : prerequisites)
 		{
-			if(!visit(prerequisite))
+			if (!visit(prerequisite))
 			{
 				return false;
 			}
 		}
-		_visitRecorder[node] = false;
+		_visitRecorder[node] = 2;
 		return true;
 	}
 
@@ -45,7 +49,14 @@ public:
 			return true;
 		}
 		preprocess(prerequisites);
-		return visit(0);
+		for (auto prerequisite : prerequisites)
+		{
+			if (!visit(prerequisite.first))
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 };
 
