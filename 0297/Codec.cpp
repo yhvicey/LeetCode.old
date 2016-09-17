@@ -1,6 +1,8 @@
-#include<string>
-#include<vector>
-#include<deque>
+#include <string>
+#include <vector>
+#include <deque>
+#include <sstream>
+#include <stack>
 
 using namespace std;
 
@@ -16,21 +18,24 @@ struct TreeNode
 
 class Codec
 {
-	vector<string> split(string source, char separator, bool removeEmptyEntries = true)
+	deque<TreeNode*> _serializeBuffer;
+
+	deque<TreeNode*> _deserializeBuffer;
+
+	stringstream converter;
+
+	static vector<string> split(string& source, char separator)
 	{
 		string temp = "";
 		vector<string> result;
 		int len = source.size();
-		for (int i = 0; i < len; i++)
+		for (auto i = 0; i < len; i++)
 		{
 			if (source[i] == separator)
 			{
-				if (removeEmptyEntries)
+				if (temp == "")
 				{
-					if (temp == "")
-					{
-						continue;
-					}
+					continue;
 				}
 				result.push_back(temp);
 				temp = "";
@@ -44,70 +49,91 @@ class Codec
 		return result;
 	}
 
+	int parse(string &input)
+	{
+		converter << input;
+		int output;
+		converter >> output;
+		converter.str("");
+		converter.clear();
+		return output;
+	}
+
 public:
 	string serialize(TreeNode* root)
 	{
-		string data;
-		deque<TreeNode*> buffer;
-		buffer.push_back(root);
-		while (!buffer.empty())
+		stringstream ss;
+		ss << "[";
+		_serializeBuffer.push_back(root);
+		while (!_serializeBuffer.empty())
 		{
-			int len = buffer.size();
-			for (int i = 0; i < len; i++)
+			auto front = _serializeBuffer.front();
+			_serializeBuffer.pop_front();
+			if (front == NULL)
 			{
-				if (buffer.front() == NULL)
-				{
-					data += '#';
-					buffer.pop_front();
-				}
-				else
-				{
-					char integer[32];
-					sprintf(integer, "%d", buffer.front()->val);
-					data += integer;
-					buffer.push_back(buffer.front()->left);
-					buffer.push_back(buffer.front()->right);
-					buffer.pop_front();
-				}
-				data += ",";
+				ss << "null,";
+			}
+			else
+			{
+				ss << front->val << ",";
+				_serializeBuffer.push_back(front->left);
+				_serializeBuffer.push_back(front->right);
 			}
 		}
-		return data.substr(0, data.size() - 1);
+		auto str = ss.str();
+		return str.substr(0, str.size() - 1) + "]";
 	}
 
 	TreeNode* deserialize(string data)
 	{
-		vector<TreeNode*> list;
+		data = data.substr(1, data.size() - 2);
 		auto datas = split(data, ',');
-		int len = datas.size();
-		if (len < 1)
+		auto len = datas.size();
+		TreeNode* root = NULL;
+		auto leftSetted = false;
+		for (auto i = 0; i < len; i++)
 		{
-			return NULL;
-		}
-		for (int i = 0; i < len; i++)
-		{
-			if (datas[i] != "#")
+			if (datas[i] == "null")
 			{
-				list.push_back(new TreeNode(atoi(datas[i].c_str())));
+				if (!_deserializeBuffer.empty())
+				{
+					auto front = _deserializeBuffer.front();
+					if (leftSetted)
+					{
+						front->right = NULL;
+						_deserializeBuffer.pop_front();
+						leftSetted = false;
+					}
+					else
+					{
+						front->left = NULL;
+						leftSetted = true;
+					}
+				}
 			}
 			else
 			{
-				list.push_back(NULL);
-			}
-		}
-		auto root = list[0];
-		for (int i = 0; i < len; i++)
-		{
-			if (list[i])
-			{
-				if (2 * i + 1 < len)
+				auto node = new TreeNode(parse(datas[i]));
+				if (root == NULL)
 				{
-					list[i]->left = list[2 * i + 1];
+					root = node;
 				}
-				if (2 * i + 2 < len)
+				if (!_deserializeBuffer.empty())
 				{
-					list[i]->right = list[2 * i + 2];
+					auto front = _deserializeBuffer.front();
+					if (leftSetted)
+					{
+						front->right = node;
+						_deserializeBuffer.pop_front();
+						leftSetted = false;
+					}
+					else
+					{
+						front->left = node;
+						leftSetted = true;
+					}
 				}
+				_deserializeBuffer.push_back(node);
 			}
 		}
 		return root;
@@ -116,6 +142,6 @@ public:
 
 int main()
 {
-	auto var = Codec().serialize(Codec().deserialize("5,2,3,#,#,2,4,#,#,#,#,3,1,#,#"));
+	auto var = Codec().serialize(Codec().deserialize("[5,2,3,null,null,2,4,null,null,null,null]"));
 	return 0;
 }

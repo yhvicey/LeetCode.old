@@ -18,6 +18,6 @@ int reverse(int x)
 
 int main()
 {
-	reverse(-2147483648);
+	reverse(-2147483647);
 	return 1;
 }

@@ -1,5 +1,5 @@
-#include<queue>
-#include<map>
+#include <algorithm>
+#include <unordered_map>
 
 using namespace std;
 
@@ -17,46 +17,35 @@ struct TreeNode
 
 class Solution
 {
-	priority_queue<int> result;
-	map<TreeNode*, int> trueRecord;
-	map<TreeNode*, int> falseRecord;
-public:
-	void visit(TreeNode* node, bool robbedJustNow, int total)
+	unordered_map<TreeNode*, unordered_map<bool,int>> record;
+
+	int visit(TreeNode* node, bool rob)
 	{
-		if (!node)
+		if(record[node][rob])
 		{
-			result.push(total);
-			return;
+			return record[node][rob];
 		}
-		if (robbedJustNow)
+		if (node == NULL)
 		{
-			if (total < trueRecord[node])
-			{
-				return;
-			}
-			trueRecord[node] = total;
-			visit(node->left, false, total);
-			visit(node->right, false, total);
+			return 0;
 		}
-		else
+		if (rob)
 		{
-			if (total < falseRecord[node])
-			{
-				return;
-			}
-			falseRecord[node] = total;
-			visit(node->left, false, total);
-			visit(node->right, false, total);
-			visit(node->left, true, total + node->val);
-			visit(node->right, true, total + node->val);
-		}	
-		return;
+			record[node][rob] = node->val + visit(node->left, false) + visit(node->right, false);
+			return record[node][rob];
+		}
+		record[node][rob] = max(visit(node->left, true), visit(node->left, false)) + max(visit(node->right, true), visit(node->right, false));
+		return record[node][rob];
 	}
 
+public:
 	int rob(TreeNode* root)
 	{
-		visit(root, false, 0);
-		return result.top();
+		if (root == NULL)
+		{
+			return 0;
+		}
+		return max(visit(root, true), visit(root, false));
 	}
 };
 
@@ -67,6 +56,5 @@ int main()
 	root.right = new TreeNode(3);
 	root.left->right = new TreeNode(3);
 	root.right->right = new TreeNode(1);
-	Solution sln;
-	auto var = sln.rob(&root);
+	auto var = Solution().rob(&root);
 }

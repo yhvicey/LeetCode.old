@@ -19,11 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{8D461E2D-CB50-4D6C-B25E-99AE38CEC7C4}</ProjectGuid>
+    <ProjectGuid>{645FF106-76A3-4418-B6E1-75C1A7F1977C}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>My0337</RootNamespace>
+    <RootNamespace>My0151</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
-    <ProjectName>0337_AC</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -143,7 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="rob.cpp" />
+    <ClCompile Include="reverseWords.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
