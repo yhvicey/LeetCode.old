@@ -1,6 +1,6 @@
-#include<string>
-#include<vector>
-#include<map>
+#include <string>
+#include <vector>
+#include <map>
 using namespace std;
 
 string longestCommonPrefix(vector<string>& strs)

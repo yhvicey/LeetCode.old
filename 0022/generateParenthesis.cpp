@@ -1,4 +1,4 @@
-#include<vector>
+#include <vector>
 using namespace std;
 
 void generate(int left, int right, string str, vector<string> &result)

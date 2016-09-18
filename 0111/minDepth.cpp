@@ -1,4 +1,4 @@
-#include<algorithm>
+#include <algorithm>
 
 using namespace std;
 

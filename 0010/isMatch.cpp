@@ -1,5 +1,5 @@
-#include<string>
-#include<regex>
+#include <string>
+#include <regex>
 using namespace std;
 
 class Solution

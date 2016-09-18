@@ -1,4 +1,4 @@
-#include<vector>
+#include <vector>
 using namespace std;
 
 int myAtoi(string str)

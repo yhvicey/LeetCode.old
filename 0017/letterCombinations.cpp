@@ -1,5 +1,5 @@
-#include<vector>
-#include<string>
+#include <vector>
+#include <string>
 using namespace std;
 
 vector<vector<string>> map

@@ -1,6 +1,6 @@
-#include<vector>
-#include<string>
-#include<deque>
+#include <vector>
+#include <string>
+#include <deque>
 
 using namespace std;
 
