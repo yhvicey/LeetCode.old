@@ -1,93 +1,60 @@
-#include<string>
+#include <string>
+#include <sstream>
 
 using namespace std;
 
 class Solution
 {
-	int compareFromEnd(string left, string right)
+	stringstream ss;
+
+	int readNumber(string &str, int &start)
 	{
-		int leftLen = left.size();
-		int rightLen = right.size();
-		while (leftLen > 0 && rightLen > 0)
+		auto len = str.size();
+		auto count = 0;
+		for (; start < len&&str[start] != '.'; start++)
 		{
-			if (left[leftLen - 1] == right[rightLen - 1])
-			{
-				leftLen--;
-				rightLen--;
-				continue;
-			}
-			if (left[leftLen - 1] >= right[rightLen - 1])
-			{
-				return 1;
-			}
-			else
-			{
-				return -1;
-			}
+			ss << str[start];
+			count++;
 		}
-		if (leftLen)
+		if (count == 0)
 		{
-			while (leftLen--)
-			{
-				if (left[leftLen] - '0')
-				{
-					return 1;
-				}
-			}
 			return 0;
 		}
-		else
-		{
-			while (rightLen--)
-			{
-				if (right[rightLen] - '0')
-				{
-					return -1;
-				}
-			}
-			return 0;
-		}
+		int result;
+		ss >> result;
+		ss.str("");
+		ss.clear();
+		return result;
 	}
 
 public:
 	int compareVersion(string version1, string version2)
 	{
-		int leftStart = 0;
-		int rightStart = 0;
-		int leftCount = 0;
-		int rightCount = 0;
-		int leftLen = version1.size();
-		int rightLen = version2.size();
-
-		while (leftStart + leftCount < leftLen && rightStart + rightCount < rightLen)
+		auto leftLen = version1.size();
+		auto rightLen = version2.size();
+		auto leftIndex = 0;
+		auto rightIndex = 0;
+		while (leftIndex < leftLen || rightIndex < rightLen)
 		{
-			if (version1[leftStart + leftCount] == '.'&& version2[rightStart + rightCount] == '.')
+			auto left = readNumber(version1, leftIndex);
+			leftIndex++;
+			auto right = readNumber(version2, rightIndex);
+			rightIndex++;
+			if (left > right)
 			{
-				int result = compareFromEnd(version1.substr(leftStart, leftCount), version2.substr(rightStart, rightCount));
-				if (result)
-				{
-					return result;
-				}
-				leftStart += (leftCount + 1);
-				rightStart += (rightCount + 1);
-				leftCount = 0;
-				rightCount = 0;
+				return 1;
 			}
-			if (version1[leftLen - 1] != '.')
+			if (right > left)
 			{
-				leftCount++;
-			}
-			if (version2[rightLen - 1] != '.')
-			{
-				rightCount++;
+				return -1;
 			}
 		}
-		return (leftLen > rightLen ? 1 : -1);
+		return 0;
 	}
 };
 
 int main()
 {
-	auto var = Solution().compareVersion("01", "1");
+	auto var = Solution().compareVersion("1", "1.1");
 	return 0;
 }

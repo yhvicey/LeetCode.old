@@ -1,4 +1,6 @@
-#include<string>
+#include <string>
+#include <unordered_map>
+
 using namespace std;
 
 class Solution
@@ -6,92 +8,26 @@ class Solution
 public:
 	int longestValidParentheses(string s)
 	{
-		int slow = 0;
-		int fast = 0;
-		int leftCount = 0;
-		int rightCount = 0;
-		int maxLength = 0;
-		bool moveSlow = false;
-		int len = s.size();
-		for (; fast<len;)
+		if(s.empty())
 		{
-			if (moveSlow)
-			{
-				if (s[slow] == '(')
-				{
-					leftCount--;
-				}
-				else
-				{
-					rightCount--;
-				}
-				slow++;
-
-				if (slow == fast)
-				{
-					moveSlow = false;
-					continue;
-				}
-
-				if (leftCount < rightCount)
-				{
-					continue;
-				}
-				else if (leftCount == rightCount)
-				{
-					maxLength = maxLength > (fast - slow) ? maxLength : (fast - slow);
-				}
-				else
-				{
-					moveSlow = false;
-				}
-			}
-			else
-			{
-				if (s[fast] == '(')
-				{
-					leftCount++;
-				}
-				else
-				{
-					rightCount++;
-				}
-				fast++;
-
-				if (leftCount < rightCount)
-				{
-					moveSlow = true;
-				}
-				else if (leftCount == rightCount)
-				{
-					maxLength = maxLength >(fast - slow) ? maxLength : (fast - slow);
-				}
-				else
-				{
-					continue;
-				}
-			}
+			return 0;
 		}
-		if (leftCount != rightCount)
+		unordered_map<int, int> dp;
+		auto len = s.size();
+		auto left = 0;
+		auto right = 0;
+		dp[0] = 0;
+		if(s[0]=='(')
 		{
-			while ((slow <= fast) && (leftCount != rightCount))
-			{
-				if (s[slow] == '(')
-				{
-					leftCount--;
-				}
-				else
-				{
-					rightCount--;
-				}
-				slow++;
-			}
+			left++;
 		}
-		if (leftCount == rightCount)
+		if (s[0] == ')')
 		{
-			maxLength = maxLength > (fast - slow) ? maxLength : (fast - slow);
+			right++;
 		}
-		return maxLength;
+		for (auto i = 1; i < len; i++)
+		{
+		}
 	}
 };
 

@@ -1,5 +1,5 @@
-#include<string>
-#include<stack>
+#include <string>
+#include <stack>
 using namespace std;
 
 bool isValid(string s)

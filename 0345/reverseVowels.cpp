@@ -1,5 +1,5 @@
-#include<string>
-#include<map>
+#include <string>
+#include <map>
 
 using namespace std;
 
