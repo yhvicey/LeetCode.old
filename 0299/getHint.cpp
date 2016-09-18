@@ -1,38 +1,43 @@
-#include<string>
+#include <string>
+#include <sstream>
 
 using namespace std;
 
 class Solution
 {
-	int record[10];
-	int bull = 0;
-	int cow = 0;
 public:
 	string getHint(string secret, string guess)
 	{
-		memset(record, 0, sizeof(int) * 10);
+		int record[10];
+		auto bull = 0;
+		auto cow = 0;
+		memset(record, 0, sizeof(record));
 		for (auto ch : secret)
 		{
 			record[ch - '0']++;
 		}
-		int len = guess.size();
-		for (int i = 0; i < len; i++)
+		for (auto i = 0;i < secret.size();i++)
 		{
 			if (guess[i] == secret[i])
 			{
+				record[guess[i] - '0']--;
 				bull++;
 			}
-			else
+		}
+		for (auto i = 0;i < secret.size();i++)
+		{
+			if (guess[i] != secret[i])
 			{
-				if (record[guess[i] - '0']-- > 0)
+				if (record[guess[i] - '0'])
 				{
+					record[guess[i] - '0']--;
 					cow++;
 				}
 			}
 		}
-		char buffer[5];
-		sprintf(buffer, "%dA%dB", bull, cow);
-		return buffer;
+		stringstream ss;
+		ss << bull << "A" << cow << "B";
+		return ss.str();
 	}
 };
 

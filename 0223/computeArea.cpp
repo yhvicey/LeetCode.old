@@ -1,48 +1,25 @@
+#include <cmath>
+
 class Solution
 {
 public:
 	int computeArea(int A, int B, int C, int D, int E, int F, int G, int H)
 	{
-		if (A >= E&&C <= G&&B >= F&&D <= H)
+		auto width = (C - A + G - E - abs(E + G - A - C)) / 2;
+		auto height = (D - B + H - F - abs(F + H - B - D)) / 2;
+		auto area1 = (C - A)*(D - B);
+		auto area2 = (G - E)*(H - F);
+		auto area3 = width*height;
+		if (width > 0 && height > 0)
 		{
-			return (G - E)*(H - F);
+			return area3;
 		}
-		if (A <= E&&C >= G&&B <= F&&D >= H)
-		{
-			return (C - A)*(D - B);
-		}
-		int total = (C - A)*(D - B) + (G - E)*(H - F);
-		if (A > G || B > H || C < E || D < F)
-		{
-			return total;
-		}
-		if (A > E)
-		{
-			if (F > B)
-			{
-				return total - (G - A)*(D - F);
-			}
-			else
-			{
-				return total - (G - A)*(H - B);
-			}
-		}
-		else
-		{
-			if (F > B)
-			{
-				return total - (C - E)*(D - F);
-			}
-			else
-			{
-				return total - (C - E)*(H - B);
-			}
-		}
+		return area1 + area2;
 	}
 };
 
 int main()
 {
-	auto var = Solution().computeArea(-2, -2, 2, 2, 3, 3, 4, 4);
+	auto var = Solution().computeArea(0, 0, 0, 0, -1, -1, 1, 1);
 	return 0;
 }
