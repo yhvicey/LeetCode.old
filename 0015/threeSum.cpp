@@ -4,7 +4,8 @@
 
 using namespace std;
 
-class Solution {
+class Solution 
+{
 	unordered_map<int, unordered_map<int, int>> _set;
 
 	void twoSum(vector<int>& nums, int target, int front)
@@ -26,7 +27,8 @@ class Solution {
 	}
 
 public:
-	vector<vector<int>> threeSum(vector<int>& nums) {
+	vector<vector<int>> threeSum(vector<int>& nums)
+	{
 		vector<vector<int>> result;
 
 		int back = nums.size();

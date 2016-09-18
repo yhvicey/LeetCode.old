@@ -2,7 +2,8 @@
 
 using namespace std;
 
-class Solution {
+class Solution 
+{
 	int twoSumClosest(vector<int>& nums, int target, int front)
 	{
 		auto back = nums.size();
@@ -26,7 +27,8 @@ class Solution {
 	}
 
 public:
-	int threeSumClosest(vector<int>& nums, int target) {
+	int threeSumClosest(vector<int>& nums, int target)
+	{
 		auto minDiff = INT_MAX;
 		for (auto i = 0;i < nums.size() - 2;i++)
 		{
